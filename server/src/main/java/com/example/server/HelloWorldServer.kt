@@ -18,15 +18,17 @@ package com.example.server
 import com.example.grpc_app_demo.GreeterGrpc.GreeterImplBase
 import com.example.grpc_app_demo.HelloRequest
 import com.example.grpc_app_demo.HelloResponse
+import com.google.protobuf.MessageLite
 import io.grpc.Grpc
 import io.grpc.InsecureServerCredentials
 import io.grpc.Server
 import io.grpc.ServerRegistry
 import io.grpc.netty.NettyServerProvider
 import io.grpc.stub.StreamObserver
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
+
+private val logger = Logger.getLogger(HelloWorldServer::class.simpleName)
 
 /**
  * Server that manages startup/shutdown of a `Greeter` server.
@@ -34,8 +36,7 @@ import java.util.logging.Logger
 class HelloWorldServer {
   private var server: Server? = null
 
-  @Throws(IOException::class)
-  private fun start() {
+  fun start() {
     ServerRegistry.getDefaultRegistry().register(NettyServerProvider())
     /* The port on which the server should run */
     val port = 50051
@@ -58,7 +59,6 @@ class HelloWorldServer {
     })
   }
 
-  @Throws(InterruptedException::class)
   private fun stop() {
     if (server != null) {
       server!!.shutdown().awaitTermination(30, TimeUnit.SECONDS)
@@ -68,8 +68,7 @@ class HelloWorldServer {
   /**
    * Await termination on the main thread since the grpc library uses daemon threads.
    */
-  @Throws(InterruptedException::class)
-  private fun blockUntilShutdown() {
+  fun blockUntilShutdown() {
     if (server != null) {
       server!!.awaitTermination()
     }
@@ -78,26 +77,20 @@ class HelloWorldServer {
   internal class GreeterImpl : GreeterImplBase() {
     override fun sayHello(req: HelloRequest, responseObserver: StreamObserver<HelloResponse>) {
       val reply = HelloResponse.newBuilder().setMessage("Hello " + req.name).build()
-      logger.info("Req: $req Res: $reply")
+      logger.info("Req: ${req.toText()} Res: ${reply.toText()}")
       responseObserver.onNext(reply)
       responseObserver.onCompleted()
     }
   }
-
-  companion object {
-    private val logger = Logger.getLogger(
-      HelloWorldServer::class.java.name
-    )
-
-    /**
-     * Main launches the server from the command line.
-     */
-    @Throws(IOException::class, InterruptedException::class)
-    @JvmStatic
-    fun main(args: Array<String>) {
-      val server = HelloWorldServer()
-      server.start()
-      server.blockUntilShutdown()
-    }
-  }
 }
+
+/**
+ * Main launches the server from the command line.
+ */
+fun main() {
+  val server = HelloWorldServer()
+  server.start()
+  server.blockUntilShutdown()
+}
+
+private fun MessageLite.toText() = toString().substringAfter('\n')

@@ -13,7 +13,8 @@ class GrpcService {
     const val port = 50051
 
     //    const val address = "100.98.232.51"
-    const val address = "10.0.0.191"
+    const val address = "10.0.0.74"
+//    const val address = "10.0.0.191"
   }
 
   private val channel = ManagedChannelBuilder.forAddress(address, port)
