@@ -78,6 +78,7 @@ class HelloWorldServer {
     internal class GreeterImpl : GreeterImplBase() {
         override fun sayHello(req: HelloRequest, responseObserver: StreamObserver<HelloResponse>) {
             val reply = HelloResponse.newBuilder().setMessage("Hello " + req.name).build()
+            logger.info("Req: $req Res: $reply")
             responseObserver.onNext(reply)
             responseObserver.onCompleted()
         }

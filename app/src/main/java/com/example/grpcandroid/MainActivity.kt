@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.grpcandroid.mainScreen.view.MainScreenView
 import com.example.grpcandroid.ui.theme.GrpcAndroidTheme
 import dagger.hilt.android.AndroidEntryPoint
+import io.grpc.ClientStreamTracer
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
