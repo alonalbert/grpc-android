@@ -25,7 +25,7 @@ internal class GrpcInterceptor : ClientInterceptor {
   private class InterceptingClientCall<Req, Res>(private val method: MethodDescriptor<Req, Res>, delegate: ClientCall<Req, Res>) : SimpleForwardingClientCall<Req, Res>(delegate) {
     override fun start(responseListener: Listener<Res>, headers: Metadata) {
       val listener = ClientCallListener(responseListener)
-      Log.d("Inspector", "Request started: method=${method.fullMethodName} headers=$headers")
+      Log.d("Inspector", "Request started: method=${method.fullMethodName} headers=$headers (${System.identityHashCode(headers)})")
       super.start(listener, headers)
     }
 
@@ -38,7 +38,7 @@ internal class GrpcInterceptor : ClientInterceptor {
   private class StreamTracer : ClientStreamTracer() {
     override fun streamCreated(transportAttrs: Attributes, headers: Metadata) {
       val address = transportAttrs.get(TRANSPORT_ATTR_REMOTE_ADDR)
-      Log.d("Inspector", "streamCreated: address: $address headers=$headers")
+      Log.d("Inspector", "streamCreated: address: $address headers=$headers (${System.identityHashCode(headers)})")
     }
 
     override fun streamClosed(status: Status) {
@@ -65,5 +65,10 @@ class ClientCallListener<Res>(responseListener: ClientCall.Listener<Res>) :
   override fun onClose(status: Status?, trailers: Metadata?) {
     super.onClose(status, trailers)
     Log.d("Inspector", "onClose: $status")
+  }
+
+  override fun onHeaders(headers: Metadata) {
+    super.onHeaders(headers)
+    Log.d("Inspector", "Response headers: $headers")
   }
 }

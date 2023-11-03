@@ -13,5 +13,6 @@ dependencies {
   implementation("io.grpc:grpc-protobuf-lite:1.47.0")
   implementation("io.grpc:grpc-netty:1.47.0")
   implementation("io.grpc:grpc-stub:1.47.0")
+  implementation("io.grpc:grpc-services:1.47.0")
   implementation(project(":proto"))
 }

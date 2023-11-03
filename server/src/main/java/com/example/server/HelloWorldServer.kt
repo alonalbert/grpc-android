@@ -21,29 +21,28 @@ import com.example.grpc_app_demo.HelloResponse
 import com.google.protobuf.MessageLite
 import io.grpc.Grpc
 import io.grpc.InsecureServerCredentials
-import io.grpc.Server
 import io.grpc.ServerRegistry
 import io.grpc.netty.NettyServerProvider
+import io.grpc.protobuf.services.ProtoReflectionService
 import io.grpc.stub.StreamObserver
 import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 
 private val logger = Logger.getLogger(HelloWorldServer::class.simpleName)
-
+private val port = 50051
 /**
  * Server that manages startup/shutdown of a `Greeter` server.
  */
 class HelloWorldServer {
-  private var server: Server? = null
+  private val server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
+    .addService(ProtoReflectionService.newInstance())
+    .addService(GreeterService())
+    .build()
 
   fun start() {
     ServerRegistry.getDefaultRegistry().register(NettyServerProvider())
+    server.start()
     /* The port on which the server should run */
-    val port = 50051
-    server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
-      .addService(GreeterImpl())
-      .build()
-      .start()
     logger.info("Server started, listening on $port")
     Runtime.getRuntime().addShutdownHook(object : Thread() {
       override fun run() {
@@ -60,18 +59,14 @@ class HelloWorldServer {
   }
 
   private fun stop() {
-    if (server != null) {
-      server!!.shutdown().awaitTermination(30, TimeUnit.SECONDS)
-    }
+    server.shutdown().awaitTermination(30, TimeUnit.SECONDS)
   }
 
   /**
    * Await termination on the main thread since the grpc library uses daemon threads.
    */
-  fun blockUntilShutdown() {
-    if (server != null) {
-      server!!.awaitTermination()
-    }
+  fun awaitTermination() {
+    server.awaitTermination()
   }
 
   internal class GreeterImpl : GreeterImplBase() {
@@ -88,9 +83,10 @@ class HelloWorldServer {
  * Main launches the server from the command line.
  */
 fun main() {
+  println(GreeterService())
   val server = HelloWorldServer()
   server.start()
-  server.blockUntilShutdown()
+  server.awaitTermination()
 }
 
 private fun MessageLite.toText() = toString().substringAfter('\n')
