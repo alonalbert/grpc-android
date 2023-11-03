@@ -9,25 +9,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BlockingViewModel @Inject constructor(
-    private val grpcService: GrpcService
-): ViewModel() {
-    private val nameValue = MutableLiveData("")
-    val nameLiveData: LiveData<String> = nameValue
+  private val grpcService: GrpcService
+) : ViewModel() {
+  private val nameValue = MutableLiveData("")
+  val nameLiveData: LiveData<String> = nameValue
 
-    private val responseValue = MutableLiveData("")
-    val responseLiveData: LiveData<String> = responseValue
+  private val responseValue = MutableLiveData("")
+  val responseLiveData: LiveData<String> = responseValue
 
-    fun sendHello() {
-        val message = grpcService.sendBlockingHello(nameLiveData.value ?: "")
-        responseValue.postValue(message)
-    }
+  fun sendHello() {
+    val message = grpcService.sendBlockingHello(nameLiveData.value ?: "")
+    responseValue.postValue(message)
+  }
 
-    fun sendServerStreamRequest() {
-        val message = grpcService.sendServerStream(nameLiveData.value ?: "")
-        responseValue.postValue(message)
-    }
+  fun sendServerStreamRequest() {
+    val message = grpcService.sendServerStream(nameLiveData.value ?: "")
+    responseValue.postValue(message)
+  }
 
-    fun updateName(newName: String) {
-        nameValue.postValue(newName)
-    }
+  fun updateName(newName: String) {
+    nameValue.postValue(newName)
+  }
 }

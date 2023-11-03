@@ -14,27 +14,27 @@ import com.example.grpcandroid.ui.theme.Teal200
 
 @Composable
 fun MainPageBottomBar(
-    currentRoute: String,
-    onItemClick: DataCallback<String>? = null
+  currentRoute: String,
+  onItemClick: DataCallback<String>? = null
 ) {
-    val items = listOf(
-        BottomBarItem.BlockingTabItem,
-        BottomBarItem.NonBlockingTabItem,
-    )
+  val items = listOf(
+    BottomBarItem.BlockingTabItem,
+    BottomBarItem.NonBlockingTabItem,
+  )
 
-    BottomAppBar(
-        backgroundColor = Color.White,
-        contentColor = Color.Gray,
-    ) {
-        items.forEach { item ->
-            BottomNavigationItem(
-                icon = { Icon(painterResource(id = R.drawable.ic_launcher_background), contentDescription = item.route) },
-                label = { Text(text = item.route) },
-                selected = currentRoute == item.route,
-                selectedContentColor = Teal200,
-                alwaysShowLabel = false,
-                onClick = { onItemClick?.invoke(item.route) }
-            )
-        }
+  BottomAppBar(
+    backgroundColor = Color.White,
+    contentColor = Color.Gray,
+  ) {
+    items.forEach { item ->
+      BottomNavigationItem(
+        icon = { Icon(painterResource(id = R.drawable.ic_launcher_background), contentDescription = item.route) },
+        label = { Text(text = item.route) },
+        selected = currentRoute == item.route,
+        selectedContentColor = Teal200,
+        alwaysShowLabel = false,
+        onClick = { onItemClick?.invoke(item.route) }
+      )
     }
+  }
 }

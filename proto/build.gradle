@@ -20,7 +20,8 @@ protobuf {
             }
             task.plugins {
                 grpc {
-                    option 'lite' }
+                    option 'lite'
+                }
             }
         }
     }

@@ -13,11 +13,11 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
-    @Provides
-    @Singleton
-    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+  @Provides
+  @Singleton
+  fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
-    @Provides
-    @Singleton
-    fun provideGrpcService(): GrpcService = GrpcService()
+  @Provides
+  @Singleton
+  fun provideGrpcService(): GrpcService = GrpcService()
 }

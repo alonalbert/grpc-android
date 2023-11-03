@@ -5,15 +5,7 @@ import com.example.grpc_app_demo.GreeterGrpc
 import com.example.grpc_app_demo.HelloRequest
 import com.example.grpc_app_demo.HelloResponse
 import com.example.grpcandroid.model.GrpcStreamListener
-import io.grpc.CallOptions
-import io.grpc.Channel
-import io.grpc.ClientCall
-import io.grpc.ClientInterceptor
-import io.grpc.ClientStreamTracer
-import io.grpc.ForwardingClientCall.SimpleForwardingClientCall
 import io.grpc.ManagedChannelBuilder
-import io.grpc.Metadata
-import io.grpc.MethodDescriptor
 import io.grpc.stub.StreamObserver
 
 class GrpcService {
