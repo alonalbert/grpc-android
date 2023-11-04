@@ -5,67 +5,37 @@ import com.example.grpc_app_demo.HelloRequest
 import com.example.grpc_app_demo.HelloResponse
 import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
-class GrpcService {
-  companion object {
-    const val port = 50051
-
-    //    const val address = "100.98.232.51"
-//    const val address = "10.0.0.74"
-    const val address = "10.0.0.191"
-  }
-
-  private val channel = ManagedChannelBuilder.forAddress(address, port)
+class GrpcService(host: String, port: Int = 50051) {
+  private val channel = ManagedChannelBuilder.forAddress(host, port)
     .usePlaintext()
     .build()
 
   private val blockingStub = GreeterGrpc.newBlockingStub(channel)
-  private val nonBlockingStub = GreeterGrpc.newStub(channel)
-  private var serverStreamObserver: GrpcStreamListener<String>? = null
+  private val stub = GreeterGrpc.newStub(channel)
 
   fun sendBlockingHello(name: String): HelloResponse =
     blockingStub.sayHello(HelloRequest.newBuilder().setName(name).build())
 
-  fun sendServerStream(name: String): String {
+  suspend fun sendHello(name: String): HelloResponse = withContext(Dispatchers.IO) {
     val request = HelloRequest.newBuilder().setName(name).build()
-    val replies = blockingStub.lotsOfReplies(request)
-    return replies.asSequence().toList().map { it -> it.message }
-      .reduce { acc, s -> "$acc, $s" }
-  }
+    suspendCoroutine {
+      stub.sayHello(request, object : StreamObserver<HelloResponse> {
+        override fun onNext(value: HelloResponse) {
+          it.resumeWith(Result.success(value))
+        }
 
-  fun sendClientStream(listener: GrpcStreamListener<String>): StreamObserver<HelloRequest> {
-    serverStreamObserver = listener
+        override fun onError(t: Throwable) {
+          it.resumeWithException(t)
+        }
 
-    return nonBlockingStub.lotsOfRequests(object : StreamObserver<HelloResponse> {
-      override fun onNext(response: HelloResponse) {
-        serverStreamObserver?.onNext(response.message)
-      }
-
-      override fun onError(t: Throwable) {
-        serverStreamObserver?.onError(t)
-      }
-
-      override fun onCompleted() {
-        serverStreamObserver?.onCompleted()
-      }
-    })
-  }
-
-  fun sendBidirectionalStream(listener: GrpcStreamListener<String>): StreamObserver<HelloRequest> {
-    serverStreamObserver = listener
-
-    return nonBlockingStub.bidirectionalHello(object : StreamObserver<HelloResponse> {
-      override fun onNext(response: HelloResponse) {
-        serverStreamObserver?.onNext(response.message)
-      }
-
-      override fun onError(t: Throwable) {
-        serverStreamObserver?.onError(t)
-      }
-
-      override fun onCompleted() {
-        serverStreamObserver?.onCompleted()
-      }
-    })
+        override fun onCompleted() {
+        }
+      })
+    }
   }
 }

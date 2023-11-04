@@ -52,8 +52,8 @@ class MainActivity : ComponentActivity() {
   }
 
   private fun sendRequest(callback: (String) -> Unit) {
-    lifecycle.coroutineScope.launch(Dispatchers.IO) {
-      val response = GrpcService().sendBlockingHello("Foo")
+    lifecycle.coroutineScope.launch {
+      val response = GrpcService("10.0.0.191").sendHello("Foo")
       withContext(Dispatchers.Main) {
         callback(response.message)
       }
