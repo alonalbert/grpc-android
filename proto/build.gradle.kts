@@ -1,12 +1,12 @@
-import com.google.protobuf.gradle.builtins
-import com.google.protobuf.gradle.generateProtoTasks
-import com.google.protobuf.gradle.plugins
-import com.google.protobuf.gradle.protobuf
-import com.google.protobuf.gradle.protoc
-
+buildscript {
+  dependencies {
+    classpath(libs.protobuf.gradle.plugin)
+  }
+}
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
   id("java-library")
-  id("com.google.protobuf")
+  alias(libs.plugins.protobuf)
 }
 
 java {
@@ -16,14 +16,14 @@ java {
 
 protobuf {
   protoc {
-    artifact = "com.google.protobuf:protoc:3.19.2"
+    artifact = "com.google.protobuf:protoc:${libs.versions.protoc.asProvider().get()}"
   }
   plugins {
     create("grpc") {
-      artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
+      artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.get()}"
     }
     create("grpckt") {
-      artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.0:jdk8@jar"
+      artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.protoc.kotlin.get()}:jdk8@jar"
     }
   }
   generateProtoTasks {
