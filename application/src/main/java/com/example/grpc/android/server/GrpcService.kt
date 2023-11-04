@@ -1,10 +1,8 @@
-package com.example.grpcandroid.service
+package com.example.grpc.android.server
 
-import com.android.tools.appinspection.network.grpc.GrpcInterceptor
 import com.example.grpc_app_demo.GreeterGrpc
 import com.example.grpc_app_demo.HelloRequest
 import com.example.grpc_app_demo.HelloResponse
-import com.example.grpcandroid.model.GrpcStreamListener
 import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
 
@@ -19,15 +17,14 @@ class GrpcService {
 
   private val channel = ManagedChannelBuilder.forAddress(address, port)
     .usePlaintext()
-    .intercept(GrpcInterceptor())
     .build()
 
   private val blockingStub = GreeterGrpc.newBlockingStub(channel)
   private val nonBlockingStub = GreeterGrpc.newStub(channel)
   private var serverStreamObserver: GrpcStreamListener<String>? = null
 
-  fun sendBlockingHello(name: String): String =
-    blockingStub.sayHello(HelloRequest.newBuilder().setName(name).build()).message
+  fun sendBlockingHello(name: String): HelloResponse =
+    blockingStub.sayHello(HelloRequest.newBuilder().setName(name).build())
 
   fun sendServerStream(name: String): String {
     val request = HelloRequest.newBuilder().setName(name).build()

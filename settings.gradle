@@ -13,6 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "grpcAndroid"
-include ':app'
+//include ':app'
 include ':server'
 include ':proto'
+include ':application'
