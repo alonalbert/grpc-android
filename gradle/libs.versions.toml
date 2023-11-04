@@ -1,5 +1,5 @@
 [versions]
-agp = "7.4.2"
+agp = "8.1.2"
 compose = "1.8.0"
 compose-bom = "2023.10.01"
 coreKtx = "1.12.0"

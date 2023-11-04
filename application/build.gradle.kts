@@ -3,7 +3,6 @@ plugins {
   id("org.jetbrains.kotlin.android")
 }
 
-@Suppress("UnstableApiUsage")
 android {
   namespace = "com.example.grpc.android"
   compileSdk = 34
@@ -32,7 +31,7 @@ android {
     targetCompatibility = JavaVersion.VERSION_17
   }
   kotlinOptions {
-    jvmTarget = "1.8"
+    jvmTarget = "17"
   }
   buildFeatures {
     compose = true
