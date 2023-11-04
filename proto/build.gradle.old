@@ -11,7 +11,7 @@ java {
 protobuf {
     protoc { artifact = 'com.google.protobuf:protoc:3.19.2' }
     plugins {
-        grpc { artifact = 'io.grpc:protoc-gen-grpc-java:1.47.0' }
+        grpc { artifact = 'io.grpc:protoc-gen-grpc-java:1.59.0' }
     }
     generateProtoTasks {
         all().each { task ->
@@ -28,8 +28,8 @@ protobuf {
 }
 
 dependencies {
-    implementation 'io.grpc:grpc-protobuf-lite:1.47.0'
-    implementation 'io.grpc:grpc-stub:1.47.0'
+    implementation 'io.grpc:grpc-protobuf-lite:1.59.0'
+    implementation 'io.grpc:grpc-stub:1.59.0'
     implementation 'com.google.guava:guava:21.0'
     implementation 'org.checkerframework:checker-qual:3.34.0'
     implementation 'org.apache.tomcat:annotations-api:6.0.53'

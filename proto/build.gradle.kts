@@ -20,7 +20,7 @@ protobuf {
   }
   plugins {
     create("grpc") {
-      artifact = "io.grpc:protoc-gen-grpc-java:1.47.0"
+      artifact = "io.grpc:protoc-gen-grpc-java:1.59.0"
     }
     create("grpckt") {
       artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.0:jdk8@jar"
@@ -49,8 +49,8 @@ protobuf {
 }
 
 dependencies {
-  implementation("io.grpc:grpc-protobuf-lite:1.47.0")
-  implementation("io.grpc:grpc-stub:1.47.0")
+  implementation("io.grpc:grpc-protobuf-lite:1.59.0")
+  implementation("io.grpc:grpc-stub:1.59.0")
   implementation("com.google.guava:guava:21.0")
   implementation("org.checkerframework:checker-qual:3.34.0")
   implementation("org.apache.tomcat:annotations-api:6.0.53")
