@@ -7,6 +7,7 @@ buildscript {
 plugins {
   id("java-library")
   alias(libs.plugins.protobuf)
+  alias(libs.plugins.kotlin)
 }
 
 java {
@@ -20,7 +21,7 @@ protobuf {
   }
   plugins {
     create("grpc") {
-      artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.get()}"
+      artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.asProvider().get()}"
     }
     create("grpckt") {
       artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.protoc.kotlin.get()}:jdk8@jar"
@@ -54,4 +55,8 @@ dependencies {
   implementation(libs.guava)
   implementation(libs.checker.qual)
   implementation(libs.javax.annotation.api)
+  compileOnly(libs.protobuf.kotlin)
+  implementation(libs.grpc.kotlin.stub)
+  implementation(libs.kotlinx.coroutines.core)
+
 }
