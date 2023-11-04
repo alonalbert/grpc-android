@@ -51,6 +51,7 @@ dependencies {
 
   implementation(libs.grpc.core)
   implementation(libs.grpc.stub)
+  implementation(libs.grpc.kotlin.stub)
   implementation(libs.grpc.okhttp)
   implementation(libs.grpc.protobuf.lite)
 

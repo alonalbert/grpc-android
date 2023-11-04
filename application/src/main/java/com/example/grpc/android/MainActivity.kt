@@ -17,11 +17,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.coroutineScope
-import com.example.grpc.android.server.GrpcService
+import com.example.grpc.android.server.GrpcServiceKotlin
 import com.example.grpc.android.ui.theme.GrpcAndroidTheme
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
 
@@ -53,10 +51,13 @@ class MainActivity : ComponentActivity() {
 
   private fun sendRequest(callback: (String) -> Unit) {
     lifecycle.coroutineScope.launch {
-      val response = GrpcService("10.0.0.191").sendHello("Foo")
-      withContext(Dispatchers.Main) {
-        callback(response.message)
+      GrpcServiceKotlin("10.0.0.191").use {
+        callback(it.greet("FooBar").message)
       }
+//      val response = GrpcService("10.0.0.191").sendHello("Foo")
+//      withContext(Dispatchers.Main) {
+//        callback(response.message)
+//      }
     }
   }
 
