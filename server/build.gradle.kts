@@ -9,10 +9,10 @@ java {
 }
 
 dependencies {
-  implementation("io.grpc:grpc-core:1.59.0")
-  implementation("io.grpc:grpc-protobuf-lite:1.59.0")
-  implementation("io.grpc:grpc-netty:1.59.0")
-  implementation("io.grpc:grpc-stub:1.59.0")
-  implementation("io.grpc:grpc-services:1.59.0")
   implementation(project(":proto"))
+  implementation(libs.grpc.core)
+  implementation(libs.grpc.protobuf.lite)
+  implementation(libs.grpc.netty)
+  implementation(libs.grpc.stub)
+  implementation(libs.grpc.services)
 }

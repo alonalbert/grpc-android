@@ -49,18 +49,19 @@ android {
 dependencies {
   implementation(project(":proto"))
 
-  implementation("io.grpc:grpc-core:1.59.0")
-  implementation("io.grpc:grpc-stub:1.59.0")
-  implementation("io.grpc:grpc-okhttp:1.59.0")
-  implementation("io.grpc:grpc-protobuf-lite:1.59.0")
+  implementation(libs.grpc.core)
+  implementation(libs.grpc.stub)
+  implementation(libs.grpc.okhttp)
+  implementation(libs.grpc.protobuf.lite)
 
-  implementation("androidx.core:core-ktx:1.12.0")
-  implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-  implementation("androidx.activity:activity-compose:1.8.0")
-  implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-  implementation("androidx.compose.ui:ui")
-  implementation("androidx.compose.ui:ui-graphics")
-  implementation("androidx.compose.ui:ui-tooling-preview")
-  implementation("androidx.compose.material3:material3")
-  debugImplementation("androidx.compose.ui:ui-tooling")
+  implementation(libs.core.ktx)
+  implementation(libs.lifecycle.runtime.ktx)
+
+  implementation(libs.compose.activity)
+  implementation(platform(libs.compose.bom))
+  implementation(libs.compose.material3)
+  implementation(libs.compose.ui)
+  implementation(libs.compose.ui.graphics)
+  implementation(libs.compose.ui.tooling.preview)
+  implementation(libs.compose.ui.tooling)
 }

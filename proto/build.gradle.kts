@@ -49,9 +49,9 @@ protobuf {
 }
 
 dependencies {
-  implementation("io.grpc:grpc-protobuf-lite:1.59.0")
-  implementation("io.grpc:grpc-stub:1.59.0")
-  implementation("com.google.guava:guava:21.0")
-  implementation("org.checkerframework:checker-qual:3.34.0")
-  implementation("org.apache.tomcat:annotations-api:6.0.53")
+  implementation(libs.grpc.protobuf.lite)
+  implementation(libs.grpc.stub)
+  implementation(libs.guava)
+  implementation(libs.checker.qual)
+  implementation(libs.tomcat.annotations)
 }
