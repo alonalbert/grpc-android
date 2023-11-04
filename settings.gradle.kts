@@ -13,8 +13,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "grpcAndroid"
-//include ':app'
+rootProject.name = "GRPC Android"
 include(":server")
 include(":proto")
 include(":application")
