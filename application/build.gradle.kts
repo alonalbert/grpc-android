@@ -3,6 +3,7 @@ plugins {
   id("org.jetbrains.kotlin.android")
 }
 
+@Suppress("UnstableApiUsage")
 android {
   namespace = "com.example.grpc.android"
   compileSdk = 34
