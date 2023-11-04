@@ -53,5 +53,5 @@ dependencies {
   implementation(libs.grpc.stub)
   implementation(libs.guava)
   implementation(libs.checker.qual)
-  implementation(libs.tomcat.annotations)
+  implementation(libs.javax.annotation.api)
 }
