@@ -26,6 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.grpc.android.server.GrpcServiceKotlin
+import com.example.grpc.android.server.Reply.Error
+import com.example.grpc.android.server.Reply.Success
 import com.example.grpc.android.ui.theme.GrpcAndroidTheme
 import kotlinx.coroutines.launch
 
@@ -78,10 +80,13 @@ fun App(host: String, onHostUpdated: suspend (String) -> Unit) {
 
       Button(onClick = {
         scope.launch {
-          GrpcServiceKotlin(host).use {
-            response = it.greet(message).message
+          val reply = GrpcServiceKotlin(host).greet(message)
+          response = when (reply) {
+            is Success -> reply.value.message
+            is Error -> reply.t.message ?: "Unexpected error"
           }
         }
+
       }) {
         Text("Send request")
       }
