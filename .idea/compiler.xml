@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="grpcAndroid.app" target="17" />
+      <module name="grpcAndroid.server" target="17" />
+      <module name="grpcAndroid.server.main" target="17" />
+      <module name="grpcAndroid.server.test" target="17" />
+    </bytecodeTargetLevel>
   </component>
 </project>
