@@ -1,6 +1,5 @@
 package com.example.grpc.android
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,26 +25,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.grpc.android.server.GrpcServiceKotlin
 import com.example.grpc.android.ui.theme.GrpcAndroidTheme
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-private suspend fun <T> Context.getSetting(key: Preferences.Key<T>, defaultValue: T): T = dataStore.data.first()[key]?: defaultValue
-private suspend fun <T> Context.putSetting(key: Preferences.Key<T>, value: T) {
-  dataStore.updateData {
-    it.toMutablePreferences().apply {
-      putAll(key to value)
-    }
-  }
-}
-
-private val HOST = stringPreferencesKey("host")
 
 class MainActivity : ComponentActivity() {
 
@@ -66,14 +48,12 @@ class MainActivity : ComponentActivity() {
 
   @Composable
   fun App() {
+    val settings = Settings(this)
+
     val scope = rememberCoroutineScope()
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
       var response by remember { mutableStateOf("") }
-      var host by remember { mutableStateOf("") }
-      LaunchedEffect(Unit) {
-        host = getSetting(HOST, "10.0.0.191")
-      }
-
+      val host by settings.getHost.collectAsState(initial = "")
       Row(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -81,9 +61,8 @@ class MainActivity : ComponentActivity() {
 
         Text("Host:")
         TextField(value = host, onValueChange = {
-          host = it
           scope.launch {
-            putSetting(HOST, host)
+            settings.saveHost(it)
           }
         })
       }
@@ -106,10 +85,12 @@ class MainActivity : ComponentActivity() {
         }
         TextField(value = message, onValueChange = { message = it })
       }
-      Text(text = response,
+      Text(
+        text = response,
         Modifier
           .fillMaxSize()
-          .border(1.dp, Color.Gray))
+          .border(1.dp, Color.Gray)
+      )
     }
   }
 

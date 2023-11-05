@@ -17,6 +17,7 @@ checker = "3.34.0"
 grpc = "1.59.0"
 guava = "21.0"
 datastore = "1.0.0"
+androidx-lifecycle = "2.6.2"
 
 [libraries]
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose" }
@@ -42,6 +43,7 @@ checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "ch
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf-kotlin" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

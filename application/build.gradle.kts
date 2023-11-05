@@ -65,6 +65,7 @@ dependencies {
   implementation(libs.compose.ui.graphics)
   implementation(libs.compose.ui.tooling.preview)
   implementation(libs.compose.ui.tooling)
+  implementation(libs.androidx.lifecycle.viewmodel.compose)
 
   implementation(libs.androidx.datastore.preferences)
 
