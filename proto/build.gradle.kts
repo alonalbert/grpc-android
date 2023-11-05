@@ -17,14 +17,14 @@ java {
 
 protobuf {
   protoc {
-    artifact = "com.google.protobuf:protoc:${libs.versions.protoc.asProvider().get()}"
+    artifact = libs.protoc.get().toString()
   }
   plugins {
     create("grpc") {
-      artifact = "io.grpc:protoc-gen-grpc-java:${libs.versions.grpc.asProvider().get()}"
+      artifact = libs.grpc.protoc.gen.java.get().toString()
     }
     create("grpckt") {
-      artifact = "io.grpc:protoc-gen-grpc-kotlin:${libs.versions.protoc.kotlin.get()}:jdk8@jar"
+      artifact = "${libs.grpc.protoc.gen.kotlin.get()}:jdk8@jar"
     }
   }
   generateProtoTasks {
@@ -58,5 +58,4 @@ dependencies {
   compileOnly(libs.protobuf.kotlin)
   implementation(libs.grpc.kotlin.stub)
   implementation(libs.kotlinx.coroutines.core)
-
 }

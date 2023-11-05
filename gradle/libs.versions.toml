@@ -10,8 +10,8 @@ kotlinx-coroutines = "1.7.3"
 lifecycle = "2.6.2"
 protobuf = "0.9.4"
 protobuf-kotlin = "3.25.0"
-protoc = "3.19.2"
-protoc-kotlin = "1.4.0"
+protoc = "3.25.0"
+grpc-kotlin-gen = "1.4.0"
 protobuf-gradle-plugin = "0.9.4"
 checker = "3.34.0"
 grpc = "1.59.0"
@@ -35,6 +35,8 @@ grpc-protobuf-lite = { module = "io.grpc:grpc-protobuf-lite", version.ref = "grp
 grpc-okhttp = { module = "io.grpc:grpc-okhttp", version.ref = "grpc" }
 grpc-services = { module = "io.grpc:grpc-services", version.ref = "grpc" }
 grpc-stub = { module = "io.grpc:grpc-stub", version.ref = "grpc" }
+grpc-protoc-gen-java = { module = "io.grpc:protoc-gen-grpc-java", version.ref = "grpc" }
+grpc-protoc-gen-kotlin = { module = "io.grpc:protoc-gen-grpc-kotlin", version.ref = "grpc-kotlin-gen" }
 javax-annotation-api = { module = "javax.annotation:javax.annotation-api", version.ref = "javax-annotation" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle" }
@@ -44,6 +46,7 @@ guava = { module = "com.google.guava:guava", version.ref = "guava" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf-kotlin" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle" }
+protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

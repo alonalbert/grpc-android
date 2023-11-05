@@ -49,7 +49,6 @@ class MainActivity : ComponentActivity() {
   @Composable
   fun App() {
     val settings = Settings(this)
-
     val scope = rememberCoroutineScope()
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
       var response by remember { mutableStateOf("") }
