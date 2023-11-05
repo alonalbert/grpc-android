@@ -16,6 +16,7 @@ protobuf-gradle-plugin = "0.9.4"
 checker = "3.34.0"
 grpc = "1.59.0"
 guava = "21.0"
+datastore = "1.0.0"
 
 [libraries]
 compose-activity = { module = "androidx.activity:activity-compose", version.ref = "compose" }
@@ -40,6 +41,7 @@ protobuf-gradle-plugin = { module = "com.google.protobuf:protobuf-gradle-plugin"
 checker-qual = { module = "org.checkerframework:checker-qual", version.ref = "checker" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 protobuf-kotlin = { module = "com.google.protobuf:protobuf-kotlin", version.ref = "protobuf-kotlin" }
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
