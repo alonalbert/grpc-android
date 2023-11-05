@@ -29,10 +29,11 @@ import com.example.grpc.android.server.GrpcServiceKotlin
 import com.example.grpc.android.ui.theme.GrpcAndroidTheme
 import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+internal class MainActivity : ComponentActivity() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    val settings = Settings(this)
     setContent {
       GrpcAndroidTheme {
         // A surface container using the 'background' color from the theme
@@ -40,64 +41,65 @@ class MainActivity : ComponentActivity() {
           modifier = Modifier.fillMaxSize(),
           color = MaterialTheme.colorScheme.background
         ) {
-          App()
+          val host by settings.getHost.collectAsState(initial = "")
+          App(host) { settings.saveHost(it) }
         }
       }
     }
   }
 
-  @Composable
-  fun App() {
-    val settings = Settings(this)
-    val scope = rememberCoroutineScope()
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-      var response by remember { mutableStateOf("") }
-      val host by settings.getHost.collectAsState(initial = "")
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-
-        Text("Host:")
-        TextField(value = host, onValueChange = {
-          scope.launch {
-            settings.saveHost(it)
-          }
-        })
-      }
-
-      Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-      ) {
-        var message by remember { mutableStateOf("") }
+}
 
 
-        Button(onClick = {
-          scope.launch {
-            GrpcServiceKotlin(host).use {
-              response = it.greet(message).message
-            }
-          }
-        }) {
-          Text("Send request")
+@Composable
+fun App(host: String, onHostUpdated: suspend (String) -> Unit) {
+  val scope = rememberCoroutineScope()
+  Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    var response by remember { mutableStateOf("") }
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+
+      Text("Host:")
+      TextField(value = host, onValueChange = {
+        scope.launch {
+          onHostUpdated(it)
         }
-        TextField(value = message, onValueChange = { message = it })
-      }
-      Text(
-        text = response,
-        Modifier
-          .fillMaxSize()
-          .border(1.dp, Color.Gray)
-      )
+      })
     }
-  }
 
-  @Preview(showBackground = true)
-  @Composable
-  fun GreetingPreview() {
-    GrpcAndroidTheme {
-      App()
+    Row(
+      horizontalArrangement = Arrangement.spacedBy(8.dp),
+      verticalAlignment = Alignment.CenterVertically,
+    ) {
+      var message by remember { mutableStateOf("") }
+
+
+      Button(onClick = {
+        scope.launch {
+          GrpcServiceKotlin(host).use {
+            response = it.greet(message).message
+          }
+        }
+      }) {
+        Text("Send request")
+      }
+      TextField(value = message, onValueChange = { message = it })
     }
+    Text(
+      text = response,
+      Modifier
+        .fillMaxSize()
+        .border(1.dp, Color.Gray)
+    )
+  }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+  GrpcAndroidTheme {
+    App("10.0.0.10") {}
   }
 }
