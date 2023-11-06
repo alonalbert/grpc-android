@@ -29,11 +29,11 @@ import java.util.concurrent.TimeUnit
 import java.util.logging.Logger
 
 private val logger = Logger.getLogger(HelloWorldServer::class.simpleName)
-private val port = 50051
+private const val DEFAULT_PORT = 50051
 /**
  * Server that manages startup/shutdown of a `Greeter` server.
  */
-class HelloWorldServer {
+class HelloWorldServer(private val port: Int) {
   private val server = Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create())
     .addService(ProtoReflectionService.newInstance())
     .addService(GreeterService())
@@ -69,7 +69,7 @@ class HelloWorldServer {
     server.awaitTermination()
   }
 
-  internal class GreeterImpl : GreeterImplBase() {
+  private class GreeterService : GreeterImplBase() {
     override fun sayHello(req: HelloRequest, responseObserver: StreamObserver<HelloResponse>) {
       val reply = HelloResponse.newBuilder().setMessage("Hello " + req.name).build()
       logger.info("Req: ${req.toText()} Res: ${reply.toText()}")
@@ -83,8 +83,7 @@ class HelloWorldServer {
  * Main launches the server from the command line.
  */
 fun main() {
-  println(GreeterService())
-  val server = HelloWorldServer()
+  val server = HelloWorldServer(DEFAULT_PORT)
   server.start()
   server.awaitTermination()
 }
