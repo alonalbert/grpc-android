@@ -17,3 +17,18 @@ dependencies {
   implementation(libs.grpc.stub)
   implementation(libs.grpc.services)
 }
+
+val fatJar = task("fatJar", type = Jar::class) {
+  archiveBaseName.set("server-app")
+  configurations.runtimeClasspath.get().forEach {
+    println(it)
+  }
+  manifest.attributes["Main-Class"] = "com.example.server.HelloWorldServerKt"
+  val dependencies = configurations
+    .runtimeClasspath
+    .get()
+    .map(::zipTree) // OR .map { zipTree(it) }
+  from(dependencies)
+  with(tasks.jar.get() as CopySpec)
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
